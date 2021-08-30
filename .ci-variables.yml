@@ -1,0 +1,58 @@
+#### USO DE .CI-VARIABLES Y TEMPLATES ####
+# Para que el uso de los templates funcione correctamente, es requerido que las variables definidas en este archivo cotnengan un valor.
+# No se podrán modificar el nombre de las variables.
+# Solo se puede modificar el valor de la derecha, en caso de no modificar se tomara el valor que esta por defecto en este archivo.
+
+variables:
+  #### Versión de Java a utilizar. Puede ser 8 u 11. ####
+  ### Recordá que en el Dockerfile del repositorio deberás cambiar "v8-maven" o "v11-maven" segun corresponda la versión de Java
+  JAVA_VERSION: "11"
+
+  #### Variables: MVN test ####
+  # Para realizar el test utilizando templates deben existir las 4 carpetas de test aunque esten vacías sino tendrá comportamiento errático.
+  # Las 4 carpetas son: unit, integration, functional y smoke, también es necesario que tengan estos nombres.
+  # En este caso solo se puede editar: 'true' o 'false'.
+  # False: para evitar el test, así en caso de que no encuentre ningún test, el pipeline correra normalmente dejando una advertencia.
+  # True: el pipeline espera encontrar la carpeta con el test a correr, si no encuentra su carpeta el pipeline se detiene indicando error.
+  PARALLEL_TESTS: "true"
+  UNIT_TESTS_ARE_MANDATORY: "true"
+  FUNCTIONAL_TESTS_ARE_MANDATORY: "false"
+  INTEGRATION_TESTS_ARE_MANDATORY: "false"
+  SMOKE_TESTS_ARE_MANDATORY: "false"
+
+  #### QUALITY SONAR ####
+  SONAR_EXCLUSIONS_FILES: ""
+  SONAR_TEST_PATH_JUNIT: ""
+
+  #### CRONJOB ####
+  # Si el template va a ser utilizado para desployar un CronJOb por favor hacer los siguientes pasos.
+  # 1- Decomentar la variable job y dejarla en true. 2- Descomentar en OKD variables la varible que refiere el archivo job-image.yml y comentar la que refiere a deploy-image.yml
+
+  #JOB: "true"
+
+  #### OKD ####
+  # Para crear variables de entorno específicas por ambiente, se puede crear un template en la misma carpeta base de OKD (OKD_TEMPLATES_BASE_PATH), que
+  # se ejecutará previo al template de deploy. En él, recomendamos instanciar todas las variables de entorno que sean dinámicas
+  # usando un ConfigMap (las variables estáticas, en cambio, deberían ir en el archivo OKD_DEPLOY_TEMPLATE_PARAMS). El nombre del ConfigMap en
+  # el template debe ser igual para los tres ambientes, y los templates deben estar en los archivos 'development.yml', 'staging.yml' y 'production.yml'.
+  # Se proveen archivos de ejemplo en este template.
+  OKD_PROJECT: ""
+  OKD_USERS: "a308908 a286930 a303088 a279016 a308577 a243116 a308368 a123178 a307177 a300479 a308977 a216906 a274630 a309431 a008965 a310390 a309616 a302854" # Deberá ir en Mayuscula
+  OKD_TEMPLATES_BASE_PATH: "okd"
+  OKD_DEPLOY_TEMPLATE_NAME: "${OKD_TEMPLATES_BASE_PATH}/deploy-image.yml"
+  #OKD_DEPLOY_TEMPLATE_NAME: "${OKD_TEMPLATES_BASE_PATH}/job-image.yml"
+  OKD_DEPLOY_TEMPLATE_PARAMS: "${OKD_TEMPLATES_BASE_PATH}/deploy-params.env"
+  CMDB: "OBPYME"
+### Las variables especificadas abajo están deprecadas, y se recomienda usar las de arriba por sobre ellas. Si bien no deberían generar problemas, no se garantiza su funcionamiento.
+#  OKD_CONFIGMAP_PATH: "okd"  # REEMPLAZADO POR ${OKD_TEMPLATES_BASE_PATH}
+#  OKD_TEMPLATE_NAME: "${OKD_TEMPLATES_BASE_PATH}/deploy-image.yml"  # REEMPLAZADO POR ${OKD_DEPLOY_TEMPLATE_NAME}
+#  OKD_TEMPLATE_PARAMS: "${OKD_TEMPLATES_BASE_PATH}/deploy-params.env"  # REEMPLAZADO POR ${OKD_DEPLOY_TEMPLATE_PARAMS}
+
+#### Variables para activar el analisis dinamico con Rapid 7 ####
+# Si tu aplicacion tiene que ser scanneada dinamicamente, debaras pasar por Rapid7. 
+# Por lo tanto, configurar las variables DAST_APP y DAST_CONFIG en el ci-variables con los datos que te pase Seguridad Aplicativa. 
+# Para esto, ponerse en contacto por medio del canal rapid7-early-adopters o al mail seguridadaplicativa@santanderrio.com.ar."
+# Una vez que S.A. te proporcione DAST_APP, DAST_CONFIG recien se podria habilitar DYNAMIC_ANALYSIS_ACTIVE pasandolo a true, sino el job fallara.
+  DYNAMIC_ANALYSIS_ACTIVE: "false"
+  DAST_APP: ""
+  DAST_CONFIG: ""

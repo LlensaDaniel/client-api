@@ -1,0 +1,7 @@
+com\client\api\controller\ClientController.class
+com\client\api\configuration\SwaggerConfiguration.class
+com\client\api\dto\RequestDto.class
+com\client\api\dto\ResponseDto.class
+com\client\api\Application.class
+com\client\api\model\Client.class
+com\client\api\service\ClientService.class

@@ -1,0 +1,11 @@
+#### ConfigMap for Develompent ####
+apiVersion: v1
+kind: Template
+objects:
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: config-map
+    data:
+      # reemplazar y agregar variables que sean necesarias
+      variable: "value"

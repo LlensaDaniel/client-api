@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Template
+parameters:
+  - name: APPLICATION_NAME
+    displayName: Application Name
+    description: The name for the application.
+  - name: APPLICATION_LABEL
+    displayName: Application Label
+    description: The label for the application common between other resources.
+  - name: ENVIRONMENT
+    displayName: Environment
+    description: Environment where the project is currently deployed.
+  - name: PROGRAM_ID
+    displayName: Program ID
+    description: The ID of the Program this app belongs to.
+  - name: REPLICAS
+    displayName: Replicas
+    description: Number of Replicas that the app will deploy at once.
+  - name: CMDB
+  - name: READINESS_PROBE_PATH
+    displayName: Readiness Probe
+    description: Readiness Health Probe, include the base path of the server if necessary.
+  - name: LIVENESS_PROBE_PATH
+    displayName: Liveness Health Probe
+    description: Liveness Health Probe, include the base path of the server if necessary.
+
+#########################################
+################ OBJECTS ################
+#########################################
+
+objects:
+  #########################################
+  ############### CRON JOBS ###############
+  #########################################
+  - kind: CronJob
+    apiVersion: batch/v1beta1
+    metadata:
+      name: ${APPLICATION_NAME}-cj
+    spec:
+      #schedule de ejemplo, cambiar según lo que se necesite.
+      schedule: "0 1 * * *"
+      concurrencyPolicy: "Forbid"
+      startingDeadlineSeconds: 100
+      suspend: false 
+      successfulJobsHistoryLimit: 3
+      failedJobsHistoryLimit: 1
+      jobTemplate:
+        spec:
+          template:
+            metadata:
+              name: ${APPLICATION_NAME}-cj
+              labels:
+                app: ${APPLICATION_NAME}-cj
+              annotations:
+                alpha.image.policy.openshift.io/resolve-names: "*"
+            spec:
+              containers:
+                - name: "${APPLICATION_NAME}-cj"
+                  image: "${APPLICATION_NAME}:default"
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    # Ejemplo de variable traída del configmap (ver archivos 'deployment.yml', 'staging.yml', y 'production.yml').
+                    - name: VARIABLE
+                      valueFrom:
+                        configMapKeyRef:
+                          key: VARIABLE
+                          name: config-map
+                  command:
+                    ["curl", "PUT"]
+                    # Agregar los comandos que sean necesarios dentro de ["curl", "PUT"] estos están de ejemplo.
+              restartPolicy: OnFailure
+              dnsPolicy: ClusterFirst
