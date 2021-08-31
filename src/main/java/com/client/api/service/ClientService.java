@@ -35,17 +35,6 @@ public class ClientService {
 			status = HttpStatus.BAD_REQUEST;
 			message = "La información del cliente ingresado no es válida. Por favor verificar y reintentar.";
 		}
-		// temporal para ver como funciona todo.
-		clients.stream().forEach(
-				p -> {
-					System.out.println("persona.nombre:" + p.getName());
-					System.out.println("persona.apellido:" + p.getLastName());
-					System.out.println("persona.fechaNacimiento:" + p.getBirthDateAsString());
-					System.out.println("persona.edad:" + p.getAge());
-					System.out.println("---------------");
-				}
-		);
-		System.out.println("##########");
 		return new ResponseEntity(message, status);
 	}
 
