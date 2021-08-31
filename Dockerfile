@@ -1,6 +1,6 @@
-FROM quay-enterprise-quay-quay-enterprise.apps.ocppaz0.ar.bsch/santandertec/santander-tecnologia-docker-base-images-java-maven:v11-maven
-
+FROM adoptopenjdk/openjdk11:alpine-jre
 VOLUME /tmp
-ADD /target/*.jar app.jar
-
-CMD [ "sh", "-c", "java -jar app.jar" ]
+ARG JAR_FILE
+COPY "/target/client-api-1.0.0.jar" app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+EXPOSE 9000
