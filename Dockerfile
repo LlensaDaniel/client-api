@@ -1,6 +1,11 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
-VOLUME /tmp
-ARG JAR_FILE
-COPY "/target/client-api-1.0.0.jar" app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM maven:3.6.0-jdk-11-slim
+
 EXPOSE 9000
+
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
+RUN mvn -f /app/pom.xml clean package
+RUN mv /app/target/*.jar /app/app.jar
+
+ENTRYPOINT [ "sh", "-c", "java -jar /app/*.jar" ]

@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -71,16 +68,25 @@ public class ClientService {
 			report += "Apellido: " + c.getLastName() + ENTER;
 			report += "Fecha de nacimiento: " + c.getBirthDateAsString() + ENTER;
 			report += "Edad: " + c.getAge() + ENTER;
-			report += "Fecha Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDate());
+			report += "Fecha Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDateAsString());
 			report += "--------------------------" + ENTER;
 		}
 		return report;
 	}
 
-	private String calculateProbabilyDateDeath(Date fechaNacimiento) {
-		// opcion 1: https://ppzs.ru/es/calculate-life-by-date-of-birth-calculation-of-life-expectancy-according-to-the-theory-of-crankshafts.html
-		// opcion 2: tomar edad de un lugar promedio de muerte y calcular en base a eso. Por ej latino america.
-		return null;
+	private int calculateProbabilyDateDeath(String BirthDateAsString) {
+
+		// Fuente: Numerología.
+
+		String[] dateSplited = BirthDateAsString.split("/");
+
+		int day = Integer.valueOf(dateSplited[0]);
+		int month = Integer.valueOf(dateSplited[1]);
+		int year = Integer.valueOf(dateSplited[2]);
+
+		int sum = day + month + year;
+
+		return sum + month + (month*2);
 	}
 
 	private double getAverage(List<Integer> clientsAges) {
