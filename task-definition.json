@@ -56,8 +56,8 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:770685108671:task-definition/cliente-app:1",
-  "family": "cliente-app",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:770685108671:task-definition/cliente-task-api:1",
+  "family": "cliente-task-api",
   "requiresAttributes": [
     {
       "targetId": null,
