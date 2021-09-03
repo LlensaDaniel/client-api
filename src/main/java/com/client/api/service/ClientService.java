@@ -68,7 +68,7 @@ public class ClientService {
 			report += "Apellido: " + c.getLastName() + ENTER;
 			report += "Fecha de nacimiento: " + c.getBirthDateAsString() + ENTER;
 			report += "Edad: " + c.getAge() + ENTER;
-			report += "Fecha Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDateAsString()) + ENTER;
+			report += "Edad Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDateAsString()) + ENTER;
 			report += "--------------------------" + ENTER;
 		}
 		return report;
