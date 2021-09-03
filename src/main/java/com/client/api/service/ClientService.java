@@ -68,7 +68,7 @@ public class ClientService {
 			report += "Apellido: " + c.getLastName() + ENTER;
 			report += "Fecha de nacimiento: " + c.getBirthDateAsString() + ENTER;
 			report += "Edad: " + c.getAge() + ENTER;
-			report += "Fecha Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDateAsString());
+			report += "Fecha Probable de muerte: " + calculateProbabilyDateDeath(c.getBirthDateAsString()) + ENTER;
 			report += "--------------------------" + ENTER;
 		}
 		return report;
@@ -84,7 +84,13 @@ public class ClientService {
 		int month = Integer.valueOf(dateSplited[1]);
 		int year = Integer.valueOf(dateSplited[2]);
 
-		int sum = day + month + year;
+		int sumDigitisYear = 0;
+		while (year > 0) {
+			sumDigitisYear = sumDigitisYear + year % 10;
+			year = year / 10;
+		}
+
+		int sum = day + month + sumDigitisYear;
 
 		return sum + month + (month*2);
 	}
